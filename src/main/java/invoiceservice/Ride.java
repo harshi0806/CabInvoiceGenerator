@@ -1,10 +1,13 @@
 package invoiceservice;
 
-import lombok.Data;
-
-//@Data annotation is used here to generate constructor keeping in consideration of final property
-@Data
 public class Ride {
     public final double distance;
     public final int time;
+    public CabRide cabRide;
+
+    public Ride(double distance, int time, CabRide cabRide) {
+        this.distance = distance;
+        this.time = time;
+        this.cabRide = cabRide;
+    }
 }

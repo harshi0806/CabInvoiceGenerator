@@ -12,12 +12,22 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class InvoiceServiceTest {
 
     @Mock
-    private InvoiceService invoiceService;
+    InvoiceService invoiceService;
+    InvoiceSummary expectedInvoiceSummary;
+    RideRepository rideRepository;
     private String userId = "a@b.com";
+    Ride[] rides;
 
     @Before
-    public void setInvoiceGenerator() {
+    public void setInvoiceService() {
         invoiceService = new InvoiceService();
+        rideRepository = new RideRepository();
+        invoiceService.setRideRepository(rideRepository);
+        rides = new Ride[]
+                {new Ride(2.0, 5, CabRide.NORMAL),
+                new Ride(0.1, 1, CabRide.PREMIUM)
+        };
+        expectedInvoiceSummary = new InvoiceSummary(2, 45.0);
     }
 
     @Test
@@ -34,22 +44,14 @@ public class InvoiceServiceTest {
 
     @Test
     public void givenDistanceAndTime_WhenMultipleRides_ShouldReturnInvoiceSummary() {
-        Ride[] rides = {new Ride(2.0, 5),
-                        new Ride(0.1, 1)
-        };
         InvoiceSummary summary = invoiceService.calculateFare(rides);
-        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30);
         Assert.assertEquals(expectedInvoiceSummary, summary);
     }
 
     @Test
     public void givenUserIdAndRides_ShouldReturnInvoiceSummary() {
-        Ride[] rides = {new Ride(2.0, 5),
-                        new Ride(0.1, 1)
-        };
         invoiceService.addRides(userId, rides);
         InvoiceSummary summary = invoiceService.getInvoiceSummary(userId);
-        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30);
         Assert.assertEquals(expectedInvoiceSummary, summary);
     }
 }
