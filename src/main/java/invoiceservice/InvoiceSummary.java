@@ -1,5 +1,9 @@
 package invoiceservice;
 
+import lombok.EqualsAndHashCode;
+
+//@EqualsAndHashCode annotation is used to generate both equals and hashCode methods
+@EqualsAndHashCode
 public class InvoiceSummary {
     private final int noOfRides;
     private final double totalFare;
@@ -9,15 +13,5 @@ public class InvoiceSummary {
         this.noOfRides = noOfRides;
         this.totalFare = totalFare;
         this.averageFare = this.totalFare / this.noOfRides;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InvoiceSummary that = (InvoiceSummary) o;
-        return noOfRides == that.noOfRides &&
-                Double.compare(that.totalFare, totalFare) == 0 &&
-                Double.compare(that.averageFare, averageFare) == 0;
     }
 }
