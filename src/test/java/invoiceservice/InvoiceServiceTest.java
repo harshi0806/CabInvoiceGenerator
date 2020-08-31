@@ -10,21 +10,24 @@ import org.mockito.junit.MockitoJUnitRunner;
 //@RunWith attaches a runner with the test class to initiate the test data
 @RunWith(MockitoJUnitRunner.class)
 public class InvoiceServiceTest {
+
     @Mock
-    private InvoiceGenerator invoiceGenerator;
+    private InvoiceService invoiceService;
+
     @Before
     public void setInvoiceGenerator() {
-        invoiceGenerator = new InvoiceGenerator();
+        invoiceService = new InvoiceService();
     }
+
     @Test
     public void givenDistanceAndTime_ShouldReturnTotalFare() {
-        double totalFare = invoiceGenerator.calculateFare(2, 5);
+        double totalFare = invoiceService.calculateFare(2, 5);
         Assert.assertEquals(25, totalFare, 0.0);
     }
 
     @Test
     public void givenDistanceOrTime_WhenLess_ShouldReturnMinimumFare() {
-        double totalFare = invoiceGenerator.calculateFare(0.1, 1);
+        double totalFare = invoiceService.calculateFare(0.1, 1);
         Assert.assertEquals(5, totalFare, 0.0);
     }
 
@@ -33,7 +36,7 @@ public class InvoiceServiceTest {
         Ride[] rides = {new Ride(2.0, 5),
                         new Ride(0.1, 1)
         };
-        InvoiceSummary summary = invoiceGenerator.calculateFare(rides);
+        InvoiceSummary summary = invoiceService.calculateFare(rides);
         InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30);
         Assert.assertEquals(expectedInvoiceSummary, summary);
     }

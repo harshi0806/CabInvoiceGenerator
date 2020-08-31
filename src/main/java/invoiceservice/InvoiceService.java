@@ -1,6 +1,6 @@
 package invoiceservice;
 
-public class InvoiceGenerator {
+public class InvoiceService {
     public static final int COST_PER_TIME = 1;
     public static final double MINIMUM_COST_PER_KILOMETER = 10;
     private static final double MINIMUM_FARE = 5;
