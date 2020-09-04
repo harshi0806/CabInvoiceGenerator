@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 //@RunWith attaches a runner with the test class to initiate the test data
@@ -48,10 +49,10 @@ public class InvoiceServiceTest {
         Assert.assertEquals(5, totalFare, 0.0);
     }
 
-    @Test(expected = AssertionError.class)
-    public void givenDistanceAndTime_WhenReturnWrongFare_ShouldReturnAssertionErrorException() {
+    @Test
+    public void givenLessDistanceAndTime_WhenCalculatedFare_ShouldReturnMinimumFare() {
         double totalFare = invoiceService.calculateFare(0, 0);
-        Assert.assertEquals(25, totalFare, 0.0);
+        Assert.assertEquals(5, totalFare, 0.0);
     }
 
     @Test
@@ -61,29 +62,30 @@ public class InvoiceServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void givenMultipleRides_WhenReturnsNull_ShouldReturnNullPointerException() {
+    public void givenMultipleRides_WhenReturnsNull_ShouldReturnNull() {
         InvoiceSummary summary = invoiceService.calculateFare(null);
-        Assert.assertEquals(exception, summary);
+        Mockito.when(invoiceService.calculateFare(null)).thenReturn(null);
+        Assert.assertEquals(null, summary);
     }
 
     @Test
-    public void givenUserIdAndRides_ShouldReturnInvoiceSummary() {
+    public void givenUserIdAndRides_WhenGiveRightInvoiceSummary_ShouldReturnEqual() {
         invoiceService.addRides(userId, rides);
         InvoiceSummary summary = invoiceService.getInvoiceSummary(userId);
         Assert.assertEquals(expectedInvoiceSummary, summary);
     }
 
     @Test(expected = AssertionError.class)
-    public void givenUserIdAndRides_WhenGiveWrongInvoiceSummary_ShouldReturnAssertionErrorException() {
+    public void givenUserIdAndRides_WhenGiveWrongInvoiceSummary_ShouldReturnNotEqual() {
         invoiceService.addRides(userId, rides);
         InvoiceSummary summary = invoiceService.getInvoiceSummary(userId);
-        Assert.assertEquals(exception, summary);
+        Assert.assertNotEquals(expectedInvoiceSummary, summary);
     }
 
     @Test(expected = AssertionError.class)
-    public void givenUserIdAndRides_WhenUserIdIsNull_ShouldReturnAssertionErrorException() {
+    public void givenUserIdAndRides_WhenUserIdIsNull_ShouldReturnNull() {
         invoiceService.addRides(null, rides);
         InvoiceSummary summary = invoiceService.getInvoiceSummary(null);
-        Assert.assertEquals(exception, summary);
+        Assert.assertEquals(null, summary);
     }
 }
